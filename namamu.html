@@ -53,11 +53,11 @@
   <h1>Please Enter Your Name</h1>
   <input type="text" id="nameInput" placeholder="YOUR NAME">
   <button onclick="checkName()">Submit</button>
-  <div id="info" class="info">Wrong name! Try again.</div>
+  <div id="info" class="info">Sorry but it isn't for you.</div>
 
 <script>
   function checkName() {
-    const correctName = "Ainni"; // her name
+    const correctName = "Ainni" , "Nurainni"; // her name
     const input = document.getElementById("nameInput").value.trim().toLowerCase();
     const info = document.getElementById("info");
 
@@ -70,3 +70,4 @@
 </script>
 </body>
 </html>
+
