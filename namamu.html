@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Start</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    input {
+      padding: 12px;
+      width: 250px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    button {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 25px;
+      background: #ff4d6d;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #e63e5c;
+    }
+
+    .info {
+      margin-top: 15px;
+      color: red;
+      font-weight: bold;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Please Enter Your Name</h1>
+  <input type="text" id="nameInput" placeholder="YOUR NAME">
+  <button onclick="checkName()">Submit</button>
+  <div id="info" class="info">Sorry but this isn't for you.</div>
+
+<script>
+  function checkName() {
+    const herNames = ["nurainni", "ainni"];
+    const yourName = ["amirul", "mirul"]; // CHANGE if needed
+
+    const input = document.getElementById("nameInput").value.trim().toLowerCase();
+    const info = document.getElementById("info");
+
+    if (herNames.includes(input)) {
+      window.location.href = "confession.html"; // her flow
+    } 
+    else if (yourName.includes(input)) {
+      window.location.href = "result.html"; // your secret page
+    } 
+    else {
+      info.style.display = "block"; // wrong name message
+    }
+  }
+</script>
+
+</body>
+</html>
