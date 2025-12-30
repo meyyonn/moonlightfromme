@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Result</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(135deg, #cfd9df, #e2ebf0);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .box {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    h1 {
+      color: #ff4d6d;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 18px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="box">
+    <h1>Her Answer</h1>
+    <p id="resultText"></p>
+	<button onclick="resetResult()">Reset result</button>
+
+<script>
+  function resetResult() {
+    localStorage.removeItem("herChoice");
+    location.reload();
+  }
+</script>
+
+  </div>
+
+  <script>
+    const choice = localStorage.getItem("herChoice");
+    const resultText = document.getElementById("resultText");
+
+    if (choice === "yeah") {
+      resultText.textContent = 'She chose "yeah"';
+    } else if (choice === "maybe") {
+      resultText.textContent = 'She chose "maybe"';
+    } else {
+      resultText.textContent = "No choice recorded.";
+    }
+  </script>
+
+</body>
+</html>
