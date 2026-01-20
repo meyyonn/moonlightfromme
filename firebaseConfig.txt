@@ -1,0 +1,19 @@
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyDV_suRKZfNkHR5OJABEvDvf-CXSNfbG88",
+    authDomain: "confession-4d848.firebaseapp.com",
+    projectId: "confession-4d848",
+    storageBucket: "confession-4d848.firebasestorage.app",
+    messagingSenderId: "839865796935",
+    appId: "1:839865796935:web:e6911c8dddf6bd0e12a462"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+</script>

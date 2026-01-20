@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Invitation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fbc2eb, #a1c4fd);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      padding: 40px 25px;
+      border-radius: 30px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+      max-width: 85%;
+      width: 450px;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      z-index: 10;
+    }
+
+    .message {
+      font-size: 20px;
+      color: #444;
+      line-height: 1.6;
+      margin-bottom: 30px;
+      min-height: 80px;
+      font-weight: 600;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 3px;
+      height: 20px;
+      background-color: #ff4d6d;
+      margin-left: 5px;
+      vertical-align: middle;
+      animation: blink 0.8s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .buttons {
+      display: none; 
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      animation: fadeIn 1.5s forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .top-buttons {
+      display: flex;
+      gap: 15px;
+      width: 100%;
+    }
+
+    button {
+      flex: 1;
+      padding: 15px 20px;
+      border: 2px solid #ff4d6d; /* Pink Border */
+      border-radius: 50px;
+      background: white; /* White Background by default */
+      color: #ff4d6d; /* Pink Text by default */
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Quicksand', sans-serif;
+    }
+
+    /* Hover State: Turn Pink with White Text */
+    button:hover {
+      background: #ff4d6d;
+      color: white;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(255, 77, 109, 0.3);
+    }
+
+    .full-width {
+      width: 100%;
+    }
+
+    .heart {
+      position: absolute;
+      width: 20px; height: 20px;
+      background: rgba(255, 255, 255, 0.4);
+      transform: rotate(45deg);
+      animation: floatUp 10s infinite linear;
+      bottom: -10vh;
+    }
+    .heart::before, .heart::after {
+      content: '';
+      position: absolute;
+      width: 20px; height: 20px;
+      background: inherit;
+      border-radius: 50%;
+    }
+    .heart::before { top: -10px; left: 0; }
+    .heart::after { top: 0; left: -10px; }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) rotate(45deg); opacity: 0; }
+      50% { opacity: 0.6; }
+      100% { transform: translateY(-120vh) rotate(45deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="heart" style="left: 10%; animation-duration: 8s;"></div>
+  <div class="heart" style="left: 85%; animation-duration: 12s;"></div>
+
+  <div class="container">
+    <div class="message">
+      <span id="text"></span><span id="cursor" class="cursor"></span>
+    </div>
+
+    <div class="buttons" id="buttons">
+      <div class="top-buttons">
+        <button onclick="goChoice('yeshangout.html')">Sure!</button>
+        <button onclick="goChoice('maybehangout.html')">Maybe?</button>
+      </div>
+      <button class="full-width" onclick="goChoice('nohangout.html')">Sorry but no</button>
+    </div>
+  </div>
+
+<script>
+  const textEl = document.getElementById("text");
+  const buttons = document.getElementById("buttons");
+  const cursor = document.getElementById("cursor");
+  const message = "Would you like to hang out with me and do some activities, like badminton or going to the cinema? Of course we’d bring our friends along. I want to make sure everything stays appropriate and comfortable. Or else it consider zina and could be lead to ikhtilat. So... would you?";
+   
+  let i = 0;
+  let dotCount = 0; 
+
+  function typeMessage() {
+    if (i < message.length) {
+      const char = message.charAt(i);
+      textEl.innerHTML += char;
+      i++;
+      let delay = 60; // Normal typing speed
+
+      // Pause at question marks
+      if (char === "?") delay = 400; 
+
+      // Pause at commas
+      if (char === ",") delay = 400; 
+
+      // Pause at dots
+      if (char === ".") {
+          dotCount++;
+          if (dotCount === 1) { 
+              delay = 400; 
+          }
+          if (dotCount === 2) { 
+              delay = 400; 
+          }
+          if (dotCount === 3) { 
+              delay = 400; 
+          }
+          if (dotCount === 6) { 
+              delay = 400; 
+          }
+      }
+      setTimeout(typeMessage, delay);
+    } else {
+      cursor.style.display = "none";
+      buttons.style.display = "flex";
+    }
+  }
+
+  function goChoice(url) {
+    // Check which link is being clicked and save the answer
+    if(url.includes('yeshangout')) {
+        localStorage.setItem('log_hangout', 'She said Sure! (Yes)');
+        localStorage.setItem('story_progress', 'Outcome: YES');
+    } 
+    else if(url.includes('maybehangout')) {
+        localStorage.setItem('log_hangout', 'She said Maybe?');
+        localStorage.setItem('story_progress', 'Outcome: MAYBE');
+    } 
+    else if(url.includes('nohangout')) {
+        localStorage.setItem('log_hangout', 'She said No/Sorry');
+        localStorage.setItem('story_progress', 'Outcome: NO');
+    }
+
+    window.location.href = url;
+  }
+
+  setTimeout(typeMessage, 800);
+</script>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script src="firebase-config.js"></script>
+</body>
+</html>

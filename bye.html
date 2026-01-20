@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Byeee</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* --- BACKGROUND --- */
+body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fbc2eb, #a1c4fd);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* --- THE CARD --- */
+    .card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(20px);
+      padding: 40px 30px;
+      border-radius: 30px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      max-width: 85%;
+      width: 350px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    /* 1. TITLE - YOUR CUSTOM STYLE */
+    h2 {
+      font-family: 'Pacifico', cursive;
+      color: #ff4d6d;
+      margin: 0 0 10px 0; /* adjusted margin to fit layout */
+      font-size: 2.5rem; /* bumped to 2.5rem so it's not too small, change to 2rem if you prefer smaller */
+      font-weight: 400; /* Pacifico doesn't need bold */
+    }
+
+    /* 2. FINISH BUTTON */
+    .finish-btn {
+      background: #ff4d6d;
+      color: white;
+      border: none;
+      padding: 12px 60px;
+      font-size: 1.1rem;
+      border-radius: 50px;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(255, 77, 109, 0.3);
+      transition: transform 0.2s;
+    }
+
+    .finish-btn:hover {
+      background: #e63950;
+      transform: scale(1.05);
+    }
+
+    /* 3. HOLLOW TEXT PILL */
+    .text-pill {
+      border: 2px solid #999; 
+      background: transparent; 
+      border-radius: 50px;
+      padding: 10px 20px;
+      width: 90%;
+      color: #555;
+      font-size: 0.9rem;
+      font-weight: 700;
+      box-sizing: border-box;
+      font-family: 'Quicksand', sans-serif;
+    }
+
+    /* --- SOCIAL ROW --- */
+    .social-row {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    /* --- ICON BUTTONS --- */
+    .icon-btn {
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+      position: relative;
+    }
+
+    /* SVG Base Styles */
+    .icon-btn svg {
+      width: 30px;
+      height: 30px;
+      transition: fill 0.3s ease;
+    }
+
+    /* --- BRAND SPECIFIC STYLES --- */
+    
+    /* Instagram */
+    .ig svg { fill: #E1306C; } /* Official Pink */
+    .ig:hover {
+      background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+      transform: translateY(-8px) scale(1.1);
+      box-shadow: 0 15px 30px rgba(225, 48, 108, 0.4);
+    }
+    .ig:hover svg { fill: white; }
+
+    /* TikTok */
+    .tk svg { fill: #000000; } /* Official Black */
+    .tk:hover {
+      background: #000;
+      transform: translateY(-8px) scale(1.1);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    }
+    .tk:hover svg { fill: white; }
+
+    /* Facebook */
+    .fb svg { fill: #1877F2; } /* Official Blue */
+    .fb:hover {
+      background: #1877F2;
+      transform: translateY(-8px) scale(1.1);
+      box-shadow: 0 15px 30px rgba(24, 119, 242, 0.4);
+    }
+    .fb:hover svg { fill: white; }
+	
+	/* Floating Heart Decorations */
+    .heart {
+      position: absolute;
+      width: 20px; height: 20px;
+      background: rgba(255, 255, 255, 0.4);
+      transform: rotate(45deg);
+      animation: floatUp 10s infinite linear;
+      bottom: -10vh;
+    }
+    .heart::before, .heart::after {
+      content: '';
+      position: absolute;
+      width: 20px; height: 20px;
+      background: inherit;
+      border-radius: 50%;
+    }
+    .heart::before { top: -10px; left: 0; }
+    .heart::after { top: 0; left: -10px; }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) rotate(45deg); opacity: 0; }
+      50% { opacity: 0.6; }
+      100% { transform: translateY(-120vh) rotate(45deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="heart" style="left: 10%; animation-duration: 8s;"></div>
+  <div class="heart" style="left: 25%; animation-duration: 15s; width: 30px; height: 30px;"></div>
+  <div class="heart" style="left: 75%; animation-duration: 12s;"></div>
+  <div class="heart" style="left: 90%; animation-duration: 9s; width: 40px; height: 40px;"></div>
+
+  <div class="card">
+    
+    <h2>Thank You!</h2>
+
+    <button class="finish-btn" onclick="closeApp()">Finish</button>
+
+    <div class="text-pill">
+      Let me know when you're done. If you wouldn't mind, you can follow me.
+    </div>
+
+    <div class="social-row">
+      <a href="https://www.instagram.com/myonn.zfr" target="_blank" class="icon-btn ig">
+        <svg viewBox="0 0 448 512">
+          <path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/>
+        </svg>
+      </a>
+
+      <a href="https://www.tiktok.com/@myyyul" target="_blank" class="icon-btn tk">
+        <svg viewBox="0 0 448 512"><path d="M448 209.91a210.06 210.06 0 0 1-122.77-39.25V349.38A162.55 162.55 0 1 1 185 188.31V278.2a74.62 74.62 0 1 0 52.23 71.18V0l88 0a121.18 121.18 0 0 0 1.86 22.17h0A122.18 122.18 0 0 0 381 102.39a121.43 121.43 0 0 0 67 20.14z"/></svg>
+      </a>
+
+      <a href="https://www.facebook.com/amirul.azfar.9659/" target="_blank" class="icon-btn fb">
+        <svg viewBox="0 0 320 512"><path d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"/></svg>
+      </a>
+    </div>
+
+  </div>
+
+  <script>
+    function closeApp() {
+      window.location.href = "namamu.html";
+    }
+  </script>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script src="firebase-config.js"></script>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>A Little Secret</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fbc2eb, #a1c4fd);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      padding: 50px 30px;
+      border-radius: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      max-width: 85%;
+      width: 420px;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      z-index: 10;
+    }
+
+    .message {
+      font-size: 20px;
+      color: #444;
+      line-height: 1.6;
+      min-height: 60px;
+      font-weight: 600;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 3px;
+      background-color: #ff4d6d;
+      margin-left: 5px;
+      animation: blink 0.8s infinite;
+    }
+
+    @keyframes blink {
+      0% { opacity: 1; }
+      50% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    .choices {
+      margin-top: 30px;
+      display: none;
+      animation: fadeIn 1s forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    button {
+      margin: 10px;
+      padding: 12px 35px;
+      border: 2px solid #ff4d6d;
+      border-radius: 50px;
+      background: transparent;
+      color: #ff4d6d;
+      font-size: 16px;
+      font-weight: bold;
+      font-family: 'Quicksand', sans-serif;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background: #ff4d6d;
+      color: white;
+      box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+      transform: scale(1.05);
+    }
+
+    /* Floating Heart Decoration */
+    .heart {
+      position: absolute;
+      width: 20px; height: 20px;
+      background: rgba(255, 255, 255, 0.4);
+      transform: rotate(45deg);
+      animation: float 10s infinite linear;
+      bottom: -10vh;
+    }
+    .heart::before, .heart::after {
+      content: '';
+      position: absolute;
+      width: 20px; height: 20px;
+      background: inherit;
+      border-radius: 50%;
+    }
+    .heart::before { top: -10px; left: 0; }
+    .heart::after { top: 0; left: -10px; }
+
+    @keyframes float {
+      0% { transform: translateY(0) rotate(45deg); opacity: 0; }
+      50% { opacity: 0.6; }
+      100% { transform: translateY(-120vh) rotate(45deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="heart" style="left: 15%; animation-duration: 7s;"></div>
+  <div class="heart" style="left: 75%; animation-duration: 10s; width: 30px; height: 30px;"></div>
+
+  <div class="container">
+    <div class="message">
+      <span id="text"></span><span id="cursor" class="cursor">&nbsp;</span>
+    </div>
+
+    <div class="choices" id="choices">
+      <button onclick="goOkay()">okay...</button>
+      <button onclick="goReally()">really?</button>
+    </div>
+  </div>
+
+<script>
+    const text = "If that so, then I want you to know that I really like you...";
+    const textEl = document.getElementById("text");
+    const cursor = document.getElementById("cursor");
+    const choices = document.getElementById("choices");
+    let i = 0;
+	let dotCount= 0;
+
+    function typeText() {
+      if (i < text.length) {
+        const char = text.charAt(i);
+        textEl.innerHTML += char;
+        i++;
+
+        let delay = 60;
+        if (char === ",") delay = 400; // Deep pause at the comma
+		
+		if (char === ".") {
+            dotCount++;
+            if (dotCount === 3) { // third dot
+            delay = 400;
+            }
+        }
+
+        setTimeout(typeText, delay);
+      } else {
+        cursor.style.display = "none";
+        choices.style.display = "block";
+      }
+    }
+
+    function goOkay() {
+	localStorage.setItem('log_reallylike', 'Okay...');
+      window.location.href = "youshouldknow.html";
+    }
+
+    function goReally() {
+	localStorage.setItem('log_reallylike', 'Really?');
+      window.location.href = "thisisreallymortifying.html";
+    }
+
+    // Delay start of typing for better UX
+    setTimeout(typeText, 800);
+</script>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script src="firebase-config.js"></script>
+</body>
+</html>
