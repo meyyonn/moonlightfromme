@@ -7,9 +7,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
   
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-  <script src="firebase-config.js"></script> <style>
-    /* --- Global Styles --- */
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script> 
+  <script src="firebase-config.js"></script> 
+  
+  <style>
+    /* --- Global Styles (Kept same as your design) --- */
     body {
       margin: 0;
       padding: 20px;
@@ -139,7 +141,6 @@
 
     .btn-home { background: #ff4d6d; color: white; }
     .btn-refresh { background: #6c5ce7; color: white; }
-    /* Red for delete */
     .btn-reset { background: #2d3436; color: white; } 
     .btn-reset:hover { background: #d63031; }
 
@@ -189,10 +190,10 @@
 
     <div class="card">
       <div class="card-header">
-        <h2>Cloud Database Log</h2>
+        <h2>Cloud Database Log (RTDB)</h2>
         <span style="font-size: 1.5rem;">☁️</span>
       </div>
-      <p style="font-size: 0.8rem; color:#666;">Live feed from Firebase.</p>
+      <p style="font-size: 0.8rem; color:#666;">Live feed from Firebase Realtime Database.</p>
       
       <table class="data-table">
         <thead>
@@ -216,23 +217,26 @@
   </div>
 
   <script>
-    // --- FIREBASE LOGIC ---
+    // --- FIREBASE REALTIME DATABASE LOGIC ---
     
-    // 1. LISTEN TO DATA (Real-time)
-    db.collection("confession_data").doc("her_response")
-      .onSnapshot((doc) => {
-        if (doc.exists) {
-          const data = doc.data();
+    // 1. LISTEN TO DATA (Live Connection)
+    // We use .ref() instead of .collection()
+    const dbRef = firebase.database().ref('her_response');
+
+    dbRef.on('value', (snapshot) => {
+        const data = snapshot.val(); // Get the data object
+        
+        if (data) {
           updateDashboard(data);
         } else {
-          console.log("No data found.");
+          console.log("Database is empty.");
           document.getElementById('resName').innerText = "Waiting...";
           document.getElementById('resDecision').innerText = "Waiting...";
           document.getElementById('resHangout').innerText = "Waiting...";
           document.getElementById('resFinalMsg').innerText = "No data yet.";
           document.getElementById('rawTableBody').innerHTML = "<tr><td colspan='2' style='text-align:center; color:#999;'>Database is empty</td></tr>";
         }
-      });
+    });
 
     // 2. UPDATE UI FUNCTION
     function updateDashboard(data) {
@@ -303,11 +307,11 @@
       });
     }
 
-    // 3. DELETE FUNCTION (Wipes the Cloud Database)
+    // 3. DELETE FUNCTION (Realtime Database Version)
     function resetData() {
       if (confirm("⚠️ WARNING: This will delete the data from the CLOUD.\n\nOnly do this if you want to reset the results to empty.\n\nAre you sure?")) {
         
-        db.collection("confession_data").doc("her_response").delete()
+        dbRef.remove()
         .then(() => {
             alert("Database wiped successfully. Dashboard is now empty.");
             location.reload();

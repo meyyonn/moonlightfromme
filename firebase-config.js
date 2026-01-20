@@ -1,39 +1,38 @@
 // firebase-config.js
 
-// --------------------------------------------------------------
-// 1. PASTE YOUR FIREBASE CONFIG HERE (Get this from Firebase Console)
-// --------------------------------------------------------------
+// 1. YOUR CONFIGURATION
 const firebaseConfig = {
-  apiKey: "AIzaSy...",  // <--- You will replace these lines
-  authDomain: "your-app.firebaseapp.com",
-  projectId: "your-app",
-  storageBucket: "your-app.appspot.com",
-  messagingSenderId: "123456",
-  appId: "1:123456"
+    apiKey: "AIzaSyDV_suRKZfNkHR5OJABEvDvf-CXSNfbG88",
+    authDomain: "confession-4d848.firebaseapp.com",
+    databaseURL: "https://confession-4d848-default-rtdb.firebaseio.com", // <--- I added this for you!
+    projectId: "confession-4d848",
+    storageBucket: "confession-4d848.firebasestorage.app",
+    messagingSenderId: "839865796935",
+    appId: "1:839865796935:web:e6911c8dddf6bd0e12a462"
 };
-// --------------------------------------------------------------
 
-// 2. Initialize Firebase
+// 2. INITIALIZE FIREBASE
+// Check if firebase is already loaded
 if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
+    firebase.initializeApp(firebaseConfig);
 }
-const db = firebase.firestore();
 
-// 3. The "Magic" Sync Function
-// This listens for any time the website tries to save data to the phone, 
-// and sends a copy to your Admin Dashboard automatically.
+// 3. START THE DATABASE
+const db = firebase.database();
+console.log("🔥 Realtime Database Connected!");
+
+// 4. THE MAGIC SAVER (Auto-Save to Cloud)
+// This code listens to your site. When it saves a name locally,
+// it instantly copies it to the online database.
 const originalSetItem = localStorage.setItem;
 
 localStorage.setItem = function(key, value) {
-  // Save to phone (normal behavior)
-  originalSetItem.apply(this, [key, value]);
+    // Save to phone (keep original behavior)
+    originalSetItem.apply(this, [key, value]);
 
-  // Send copy to Cloud (Firebase)
-  // We use a fixed document ID 'her_response' so all data stays in one place
-  db.collection("confession_data").doc("her_response").set({
-    [key]: value,
-    last_updated: firebase.firestore.FieldValue.serverTimestamp()
-  }, { merge: true }); 
+    // Save to Cloud (Realtime Database)
+    db.ref('her_response').update({
+        [key]: value,
+        last_updated: Date.now() // Adds a timestamp
+    }).catch(error => console.error("Error saving to cloud:", error));
 };
-
-console.log("Firebase Connected and Listening...");
