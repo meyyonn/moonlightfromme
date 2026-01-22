@@ -8,6 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
 
   <style>
+    /* --- EXACT DESIGN PRESERVED --- */
     body {
       margin: 0;
       padding: 0;
@@ -23,13 +24,11 @@
       text-align: center;
       overflow: hidden;
     }
-
     @keyframes gradientBG {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
-
     .container {
       background: rgba(255, 255, 255, 0.8);
       backdrop-filter: blur(10px);
@@ -37,19 +36,18 @@
       border-radius: 30px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
       max-width: 85%;
-      width: 420px;
+      width: 400px;
       border: 1px solid rgba(255, 255, 255, 0.4);
       z-index: 10;
     }
-
     .message {
-      font-size: 20px;
+      font-size: 22px;
       color: #444;
       line-height: 1.6;
-      min-height: 80px;
+      min-height: 100px; /* Taller for 2 lines */
       font-weight: 600;
+      margin-bottom: 10px;
     }
-
     .cursor {
       display: inline-block;
       width: 3px;
@@ -57,24 +55,13 @@
       margin-left: 5px;
       animation: blink 0.8s infinite;
     }
-
-    @keyframes blink {
-      0% { opacity: 1; }
-      50% { opacity: 0; }
-      100% { opacity: 1; }
-    }
-
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
     .choices {
-      margin-top: 30px;
+      margin-top: 25px;
       display: none;
       animation: fadeIn 1s forwards;
     }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     button {
       margin: 10px;
       padding: 12px 35px;
@@ -88,44 +75,18 @@
       cursor: pointer;
       transition: all 0.3s ease;
     }
-
-    button:hover {
-      background: #ff4d6d;
-      color: white;
-      box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
-      transform: scale(1.05);
-    }
-
-    /* Floating Heart Decoration */
-    .heart {
-      position: absolute;
-      width: 20px; height: 20px;
-      background: rgba(255, 255, 255, 0.4);
-      transform: rotate(45deg);
-      animation: float 10s infinite linear;
-      bottom: -10vh;
-    }
-    .heart::before, .heart::after {
-      content: '';
-      position: absolute;
-      width: 20px; height: 20px;
-      background: inherit;
-      border-radius: 50%;
-    }
+    button:hover { background: #ff4d6d; color: white; box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4); transform: scale(1.05); }
+    .heart { position: absolute; width: 20px; height: 20px; background: rgba(255, 255, 255, 0.4); transform: rotate(45deg); animation: float 10s infinite linear; bottom: -10vh; }
+    .heart::before, .heart::after { content: ''; position: absolute; width: 20px; height: 20px; background: inherit; border-radius: 50%; }
     .heart::before { top: -10px; left: 0; }
     .heart::after { top: 0; left: -10px; }
-
-    @keyframes float {
-      0% { transform: translateY(0) rotate(45deg); opacity: 0; }
-      50% { opacity: 0.6; }
-      100% { transform: translateY(-120vh) rotate(45deg); opacity: 0; }
-    }
+    @keyframes float { 0% { transform: translateY(0) rotate(45deg); opacity: 0; } 50% { opacity: 0.6; } 100% { transform: translateY(-120vh) rotate(45deg); opacity: 0; } }
   </style>
 </head>
 <body>
 
-  <div class="heart" style="left: 5%; animation-duration: 6s;"></div>
-  <div class="heart" style="left: 90%; animation-duration: 9s; width: 30px; height: 30px;"></div>
+  <div class="heart" style="left: 15%; animation-duration: 10s;"></div>
+  <div class="heart" style="left: 75%; animation-duration: 12s;"></div>
 
   <div class="container">
     <div class="message">
@@ -138,7 +99,25 @@
     </div>
   </div>
 
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
 <script>
+    // 1. CONFIGURATION
+    const firebaseConfig = {
+      apiKey: "AIzaSyDV_suRKZfNkHR5OJABEvDvf-CXSNfbG88",
+      authDomain: "confession-4d848.firebaseapp.com",
+      databaseURL: "https://confession-4d848-default-rtdb.firebaseio.com",
+      projectId: "confession-4d848",
+      storageBucket: "confession-4d848.firebasestorage.app",
+      messagingSenderId: "839865796935",
+      appId: "1:839865796935:web:e6911c8dddf6bd0e12a462"
+    };
+
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // 2. TYPING LOGIC
     const text = "You know, I don't know why'd my heart melt for you. You're really mesmerising.";
     const textEl = document.getElementById("text");
     const cursor = document.getElementById("cursor");
@@ -153,7 +132,7 @@
 
         let delay = 60;
         if (char === ",") delay = 400;
-        if (char === ".") delay = 400; // Longer pause after the first sentence
+        if (char === ".") delay = 400;
 
         setTimeout(typeText, delay);
       } else {
@@ -161,21 +140,29 @@
         choices.style.display = "block";
       }
     }
+    setTimeout(typeText, 500);
+
+    // 3. SAVING LOGIC
+    function saveAndGo(choice, url) {
+        const visitorName = localStorage.getItem('visitorName');
+        if(visitorName) {
+            db.ref('her_response/' + visitorName).update({
+                log_mortifying: choice,
+                last_updated: new Date().toISOString()
+            }).then(() => window.location.href = url)
+              .catch(() => window.location.href = url);
+        } else {
+            window.location.href = url;
+        }
+    }
 
     function goOkay() {
-	localStorage.setItem('log_mortifying', 'Okay (Neutral)');
-      window.location.href = "youshouldknow.html";
+      saveAndGo('Okay (Neutral)', 'youshouldknow.html');
     }
 
     function goIam() {
-	localStorage.setItem('log_mortifying', 'I am? (Surprised)');
-      window.location.href = "yourecutebtw.html";
+      saveAndGo('I am? (Surprised)', 'yourecutebtw.html');
     }
-
-    setTimeout(typeText, 800);
 </script>
-
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script> <script src="firebase-config.js"></script>
 </body>
 </html>

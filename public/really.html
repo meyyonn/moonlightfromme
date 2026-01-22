@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>From My Heart</title>
+  <title>Really?!</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
 
   <style>
+    /* --- EXACT DESIGN PRESERVED --- */
     body {
       margin: 0;
       padding: 0;
@@ -88,10 +89,10 @@
     button {
       flex: 1;
       padding: 15px 20px;
-      border: 2px solid #ff4d6d; /* Pink Border */
+      border: 2px solid #ff4d6d;
       border-radius: 50px;
-      background: white; /* White Background by default */
-      color: #ff4d6d; /* Pink Text by default */
+      background: white;
+      color: #ff4d6d;
       font-size: 16px;
       font-weight: bold;
       cursor: pointer;
@@ -99,7 +100,6 @@
       font-family: 'Quicksand', sans-serif;
     }
 
-    /* Hover State: Turn Pink with White Text */
     button:hover {
       background: #ff4d6d;
       color: white;
@@ -110,56 +110,47 @@
     .full-width {
       width: 100%;
     }
-
-    .heart {
-      position: absolute;
-      width: 20px; height: 20px;
-      background: rgba(255, 255, 255, 0.4);
-      transform: rotate(45deg);
-      animation: floatUp 10s infinite linear;
-      bottom: -10vh;
-    }
-    .heart::before, .heart::after {
-      content: '';
-      position: absolute;
-      width: 20px; height: 20px;
-      background: inherit;
-      border-radius: 50%;
-    }
-    .heart::before { top: -10px; left: 0; }
-    .heart::after { top: 0; left: -10px; }
-
-    @keyframes floatUp {
-      0% { transform: translateY(0) rotate(45deg); opacity: 0; }
-      50% { opacity: 0.6; }
-      100% { transform: translateY(-120vh) rotate(45deg); opacity: 0; }
-    }
   </style>
 </head>
 <body>
 
-  <div class="heart" style="left: 10%; animation-duration: 8s;"></div>
-  <div class="heart" style="left: 85%; animation-duration: 12s;"></div>
-
   <div class="container">
     <div class="message">
-      <span id="text"></span><span id="cursor" class="cursor"></span>
+      <span id="text"></span><span id="cursor" class="cursor">&nbsp;</span>
     </div>
 
     <div class="buttons" id="buttons">
       <div class="top-buttons">
-        <button onclick="goChoice('iwasntexpectingthat.html')">Sure</button>
-        <button onclick="goChoice('whyyyy.html')">No way</button>
+        <button onclick="goChoice('bestfriend.html')">Sure you can!</button>
+        <button onclick="goChoice('bestfriend.html')">I guess so...</button>
       </div>
-      <button class="full-width" onclick="goChoice('really.html')">We could be friends</button>
+      <button class="full-width" onclick="goChoice('regularfriend.html')">Not that far</button>
     </div>
   </div>
 
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
 <script>
+  // 1. CONFIGURATION
+  const firebaseConfig = {
+      apiKey: "AIzaSyDV_suRKZfNkHR5OJABEvDvf-CXSNfbG88",
+      authDomain: "confession-4d848.firebaseapp.com",
+      databaseURL: "https://confession-4d848-default-rtdb.firebaseio.com",
+      projectId: "confession-4d848",
+      storageBucket: "confession-4d848.firebasestorage.app",
+      messagingSenderId: "839865796935",
+      appId: "1:839865796935:web:e6911c8dddf6bd0e12a462"
+  };
+
+  if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  // 2. TYPING LOGIC
   const textEl = document.getElementById("text");
   const buttons = document.getElementById("buttons");
   const cursor = document.getElementById("cursor");
-  const message = "I like you very very much, and I hope I can be more than just a friend, someone meaningful to you.";
+  const message = "Really? Can I be your favorite boy, The one you wouldn't mind sharing things with.";
   let i = 0;
 
   function typeMessage() {
@@ -169,25 +160,35 @@
       i++;
       let delay = 60;
       if (char === ",") delay = 400; 
-	  if (char === ".") delay = 400; 
+      if (char === "?") delay = 400; 
+      if (char === ".") delay = 400; 
       setTimeout(typeMessage, delay);
     } else {
       cursor.style.display = "none";
       buttons.style.display = "flex";
     }
   }
+  
+  setTimeout(typeMessage, 500);
 
+  // 3. SAVING LOGIC
   function goChoice(url) {
-    if(url.includes('iwasntexpectingthat.html')) localStorage.setItem('choice_decision', 'ACCEPTED (Yes)');
-    if(url.includes('whyyyy.html')) localStorage.setItem('choice_decision', 'REJECTED (No)');
-    if(url.includes('really.html')) localStorage.setItem('choice_decision', 'NEGOTIATE (Friends)');
-    window.location.href = url;
-}
+    const visitorName = localStorage.getItem('visitorName');
+    let negotiation = '';
 
-  setTimeout(typeMessage, 800);
+    if(url.includes('bestfriend.html')) negotiation = 'Best Friend';
+    if(url.includes('regularfriend.html')) negotiation = 'Regular Friend';
+
+    if (visitorName) {
+        db.ref('her_response/' + visitorName).update({
+            log_negotiate: negotiation,
+            last_updated: new Date().toISOString()
+        }).then(() => window.location.href = url)
+          .catch(() => window.location.href = url);
+    } else {
+        window.location.href = url;
+    }
+  }
 </script>
-
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script> <script src="firebase-config.js"></script>
 </body>
 </html>

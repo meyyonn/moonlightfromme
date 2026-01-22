@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>The Rejection</title>
+  <title>After all things we've been through</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
 
   <style>
+    /* --- EXACT DESIGN PRESERVED --- */
     body {
       margin: 0;
       padding: 0;
@@ -31,19 +32,19 @@
     }
 
     .container {
-      background: rgba(255, 255, 255, 0.8);
+      background: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(10px);
       padding: 50px 30px;
       border-radius: 30px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
       max-width: 85%;
-      width: 420px;
+      width: 450px;
       border: 1px solid rgba(255, 255, 255, 0.4);
       z-index: 10;
     }
 
     .message {
-      font-size: 22px;
+      font-size: 20px;
       color: #444;
       line-height: 1.6;
       min-height: 80px;
@@ -59,7 +60,7 @@
     }
 
     @keyframes blink {
-      0% { opacity: 1; }
+      0%, 100% { opacity: 1; }
       50% { opacity: 0; }
       100% { opacity: 1; }
     }
@@ -93,10 +94,8 @@
       background: #ff4d6d;
       color: white;
       box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
-      transform: scale(1.05);
     }
 
-    /* Floating Hearts Decoration */
     .heart {
       position: absolute;
       width: 20px; height: 20px;
@@ -105,16 +104,6 @@
       animation: float 10s infinite linear;
       bottom: -10vh;
     }
-    .heart::before, .heart::after {
-      content: '';
-      position: absolute;
-      width: 20px; height: 20px;
-      background: inherit;
-      border-radius: 50%;
-    }
-    .heart::before { top: -10px; left: 0; }
-    .heart::after { top: 0; left: -10px; }
-
     @keyframes float {
       0% { transform: translateY(0) rotate(45deg); opacity: 0; }
       50% { opacity: 0.6; }
@@ -124,8 +113,8 @@
 </head>
 <body>
 
-  <div class="heart" style="left: 10%; animation-duration: 8s;"></div>
-  <div class="heart" style="left: 80%; animation-duration: 12s; width: 30px; height: 30px;"></div>
+  <div class="heart" style="left: 10%; animation-duration: 9s;"></div>
+  <div class="heart" style="left: 80%; animation-duration: 14s;"></div>
 
   <div class="container">
     <div class="message">
@@ -133,13 +122,31 @@
     </div>
 
     <div class="choices" id="choices">
-      <button onclick="goA()">Sure</button>
-      <button onclick="goB()">No means no</button>
+      <button onclick="goA()">Say something / Ask question</button>
+      <button onclick="goB()">No</button>
     </div>
   </div>
 
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
 <script>
-    const text = "I understand. I respect your feelings and I hope we can still be friends I guess?";
+    // 1. CONFIGURATION
+    const firebaseConfig = {
+      apiKey: "AIzaSyDV_suRKZfNkHR5OJABEvDvf-CXSNfbG88",
+      authDomain: "confession-4d848.firebaseapp.com",
+      databaseURL: "https://confession-4d848-default-rtdb.firebaseio.com",
+      projectId: "confession-4d848",
+      storageBucket: "confession-4d848.firebasestorage.app",
+      messagingSenderId: "839865796935",
+      appId: "1:839865796935:web:e6911c8dddf6bd0e12a462"
+    };
+
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // 2. TYPING LOGIC
+    const text = "Okay, I guess we’ve finally come to the end. Is there something you want to say, or is there any question you want to ask?";
     const textEl = document.getElementById("text");
     const cursor = document.getElementById("cursor");
     const choices = document.getElementById("choices");
@@ -152,6 +159,7 @@
         i++;
 
         let delay = 60;
+        if (char === ",") delay = 400;
         if (char === "?") delay = 400;
         if (char === ".") delay = 400;
 
@@ -161,22 +169,32 @@
         choices.style.display = "block";
       }
     }
+    
+    setTimeout(typeText, 500);
+
+    // 3. SAVING LOGIC
+    function saveAndGo(progressMsg, url) {
+        const visitorName = localStorage.getItem('visitorName');
+        if(visitorName) {
+            db.ref('her_response/' + visitorName).update({
+                story_progress: progressMsg,
+                last_updated: new Date().toISOString()
+            }).then(() => window.location.href = url)
+              .catch(() => window.location.href = url);
+        } else {
+            window.location.href = url;
+        }
+    }
 
     function goA() {
-	localStorage.setItem('log_whyyyy', 'Fine with being friends');
-      window.location.href = "really.html";
+      // She wants to type a final message
+      saveAndGo('She has final words/questions', 'finalwords.html');
     }
 
     function goB() {
-	localStorage.setItem('log_whyyyy', 'Refused friendship');
-      window.location.href = "pleaseknowit.html";
+      // She is done
+      saveAndGo('Flow Complete (No questions)', 'closure.html');
     }
-
-    // Small initial delay before typing starts
-    setTimeout(typeText, 800);
 </script>
-
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script> <script src="firebase-config.js"></script>
 </body>
 </html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Start</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+  
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+  <style>
+    /* --- YOUR ORIGINAL BEAUTIFUL CSS --- */
+    body { margin: 0; padding: 0; font-family: 'Quicksand', sans-serif; background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #ffd1ff, #fbc2eb); background-size: 400% 400%; animation: gradientBG 15s ease infinite; height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden; position: relative; }
+    @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+    .container { background: rgba(255, 255, 255, 0.85); padding: 40px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); text-align: center; width: 90%; max-width: 350px; border: 1px solid rgba(255, 255, 255, 0.5); z-index: 10; }
+    h1 { font-family: 'Pacifico', cursive; color: #ff5e78; margin-bottom: 25px; font-size: 28px; }
+    input { width: 100%; box-sizing: border-box; padding: 15px; border-radius: 50px; border: 2px solid #ffdde1; background: #fff; font-family: 'Quicksand', sans-serif; font-size: 16px; text-align: center; margin-bottom: 20px; outline: none; transition: 0.3s; color: #555; }
+    input:focus { border-color: #ff9a9e; box-shadow: 0 0 10px rgba(255, 154, 158, 0.3); }
+    button { width: 100%; padding: 15px; border: none; border-radius: 50px; background: linear-gradient(to right, #ff758c, #ff7eb3); color: white; font-size: 18px; font-weight: bold; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; font-family: 'Quicksand', sans-serif; }
+    button:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255, 117, 140, 0.4); }
+    .info { margin-top: 20px; color: #ff4d4d; font-weight: bold; display: none; font-size: 14px; background: #ffe6e6; padding: 10px; border-radius: 10px; }
+    .heart { position: absolute; width: 20px; height: 20px; background: rgba(255, 255, 255, 0.5); transform: rotate(45deg); animation: float 10s infinite linear; bottom: -10vh; z-index: 1; }
+    .heart::before, .heart::after { content: ''; position: absolute; width: 20px; height: 20px; background: rgba(255, 255, 255, 0.5); border-radius: 50%; }
+    .heart::before { top: -10px; left: 0; }
+    .heart::after { top: 0; left: -10px; }
+    @keyframes float { 0% { transform: translateY(0) rotate(45deg); opacity: 0; } 50% { opacity: 0.8; } 100% { transform: translateY(-120vh) rotate(45deg); opacity: 0; } }
+  </style>
+</head>
+<body>
+
+  <div class="heart" style="left: 10%; animation-duration: 8s;"></div>
+  <div class="heart" style="left: 70%; animation-duration: 15s; width: 40px; height: 40px;"></div>
+
+  <div class="container">
+    <h1>Who are you?</h1>
+    <input type="text" id="nameInput" placeholder="Enter your name here..." autocomplete="off">
+    <button onclick="startJourney()">Enter</button>
+    <div id="info" class="info">Sorry but this isn't for you. 😢</div>
+  </div>
+
+<script>
+  // 1. CONFIGURATION
+  const firebaseConfig = {
+      apiKey: "AIzaSyDV_suRKZfNkHR5OJABEvDvf-CXSNfbG88",
+      authDomain: "confession-4d848.firebaseapp.com",
+      databaseURL: "https://confession-4d848-default-rtdb.firebaseio.com",
+      projectId: "confession-4d848",
+      storageBucket: "confession-4d848.firebasestorage.app",
+      messagingSenderId: "839865796935",
+      appId: "1:839865796935:web:e6911c8dddf6bd0e12a462"
+  };
+
+  if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  function startJourney() {
+    // Convert to lowercase to make matching easier
+    const input = document.getElementById("nameInput").value.trim().toLowerCase();
+    const btn = document.querySelector("button");
+    const info = document.getElementById("info");
+
+    const herNames = ["nurainni", "ainni", "nur ainni"]; 
+    const yourName = ["amirul", "mirul", "myadmin"]; 
+
+    // --- LOGIC FROM YOUR PROTOTYPE ---
+    
+    if (herNames.includes(input)) {
+        btn.innerText = "Connecting...";
+
+        // 1. SESSION: Save name to browser (so other pages know who she is)
+        localStorage.setItem('visitorName', input);
+
+        // 2. PATH: We use 'her_response/' + input to create a specific folder for HER
+        const userRef = db.ref('her_response/' + input);
+
+        // 3. SET: We use .set() to START FRESH (Initialize the journey)
+        // This mirrors how you did it in question1.html
+        userRef.set({
+            name: input,
+            startTime: new Date().toISOString(),
+            status: "Started Journey"
+        }).then(() => {
+            window.location.href = "importance.html"; 
+        }).catch((e) => {
+            console.error(e);
+            // Even if offline, let her in
+            window.location.href = "importance.html";
+        });
+    } 
+    else if (yourName.includes(input)) {
+        // Admin just goes to dashboard
+        window.location.href = "result.html"; 
+    } 
+    else {
+        // Wrong person
+        info.style.display = "block";
+        const inputField = document.getElementById("nameInput");
+        inputField.style.border = "2px solid red";
+        setTimeout(() => inputField.style.border = "2px solid #ffdde1", 2000);
+    }
+  }
+</script>
+
+</body>
+</html>

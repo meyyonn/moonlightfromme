@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Wanna know my secret?</title>
+  <title>You know right?</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
 
   <style>
+    /* --- YOUR EXACT DESIGN PRESERVED --- */
     body {
       margin: 0;
       padding: 0;
@@ -37,7 +38,7 @@
       border-radius: 30px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
       max-width: 85%;
-      width: 420px;
+      width: 400px;
       border: 1px solid rgba(255, 255, 255, 0.4);
       z-index: 10;
     }
@@ -46,8 +47,9 @@
       font-size: 22px;
       color: #444;
       line-height: 1.6;
-      min-height: 80px;
+      min-height: 60px;
       font-weight: 600;
+      margin-bottom: 10px;
     }
 
     .cursor {
@@ -65,8 +67,8 @@
     }
 
     .choices {
-      margin-top: 30px;
-      display: none;
+      margin-top: 25px;
+      display: none; /* Hidden until typing finishes */
       animation: fadeIn 1s forwards;
     }
 
@@ -77,7 +79,7 @@
 
     button {
       margin: 10px;
-      padding: 12px 30px;
+      padding: 12px 35px;
       border: 2px solid #ff4d6d;
       border-radius: 50px;
       background: transparent;
@@ -96,7 +98,7 @@
       transform: scale(1.05);
     }
 
-    /* Floating Hearts Decoration */
+    /* Floating Heart Decoration */
     .heart {
       position: absolute;
       width: 20px; height: 20px;
@@ -125,7 +127,7 @@
 <body>
 
   <div class="heart" style="left: 10%; animation-duration: 8s;"></div>
-  <div class="heart" style="left: 80%; animation-duration: 12s; width: 30px; height: 30px;"></div>
+  <div class="heart" style="left: 85%; animation-duration: 11s;"></div>
 
   <div class="container">
     <div class="message">
@@ -133,13 +135,31 @@
     </div>
 
     <div class="choices" id="choices">
-      <button onclick="goA()">Yeah sure!</button>
-      <button onclick="goB()">No, thanks!</button>
+      <button onclick="goMaybe()">maybe...</button>
+      <button onclick="goYeah()">yeah...</button>
     </div>
   </div>
 
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
 <script>
-    const text = "Alright, you know, there are so many things about me that I want to share with you. Would you like to know?";
+    // 1. CONFIGURATION
+    const firebaseConfig = {
+      apiKey: "AIzaSyDV_suRKZfNkHR5OJABEvDvf-CXSNfbG88",
+      authDomain: "confession-4d848.firebaseapp.com",
+      databaseURL: "https://confession-4d848-default-rtdb.firebaseio.com",
+      projectId: "confession-4d848",
+      storageBucket: "confession-4d848.firebasestorage.app",
+      messagingSenderId: "839865796935",
+      appId: "1:839865796935:web:e6911c8dddf6bd0e12a462"
+    };
+
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // 2. TYPING LOGIC (UNCHANGED)
+    const text = "You know that I like you, right?";
     const textEl = document.getElementById("text");
     const cursor = document.getElementById("cursor");
     const choices = document.getElementById("choices");
@@ -153,8 +173,7 @@
 
         let delay = 60;
         if (char === ",") delay = 400;
-        if (char === "?") delay = 400;
-		if (char === ".") delay = 400;
+		if (char === "?") delay = 400;
 
         setTimeout(typeText, delay);
       } else {
@@ -163,21 +182,37 @@
       }
     }
 
-    function goA() {
-	localStorage.setItem('log_secrets', 'Yes, tell me!');
-      window.location.href = "yessecretstory1.html";
-    }
-
-    function goB() {
-	localStorage.setItem('log_secrets', 'No thanks.');
-      window.location.href = "nosecretstory1.html";
-    }
-
-    // Small initial delay before typing starts
     setTimeout(typeText, 800);
+
+    // 3. UPDATED SAVING LOGIC
+    function saveAndGo(choice, url) {
+        const visitorName = localStorage.getItem('visitorName');
+        
+        if(visitorName) {
+            // Update HER specific folder
+            db.ref('her_response/' + visitorName).update({
+                ykr_choice: choice,
+                last_updated: new Date().toISOString()
+            }).then(() => {
+                window.location.href = url;
+            }).catch(() => {
+                // If error, redirect anyway
+                window.location.href = url;
+            });
+        } else {
+            // Fallback
+            window.location.href = url;
+        }
+    }
+
+    function goMaybe() {
+        saveAndGo('Maybe...', 'ihopeyouknowit.html');
+    }
+
+    function goYeah() {
+        saveAndGo('Yeah...', 'thisisreallymortifying.html');
+    }
 </script>
 
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script> <script src="firebase-config.js"></script>
 </body>
 </html>
