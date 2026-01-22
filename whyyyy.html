@@ -4,112 +4,21 @@
   <meta charset="UTF-8">
   <title>The Rejection</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
-
   <style>
-    /* --- EXACT DESIGN PRESERVED --- */
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Quicksand', sans-serif;
-      background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fbc2eb, #a1c4fd);
-      background-size: 400% 400%;
-      animation: gradientBG 15s ease infinite;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      text-align: center;
-      overflow: hidden;
-    }
-
-    @keyframes gradientBG {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    .container {
-      background: rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(10px);
-      padding: 50px 30px;
-      border-radius: 30px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-      max-width: 85%;
-      width: 420px;
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      z-index: 10;
-    }
-
-    .message {
-      font-size: 20px;
-      color: #444;
-      line-height: 1.6;
-      min-height: 80px;
-      font-weight: 600;
-    }
-
-    .cursor {
-      display: inline-block;
-      width: 3px;
-      background-color: #ff4d6d;
-      margin-left: 5px;
-      animation: blink 0.8s infinite;
-    }
-
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
-      100% { opacity: 1; }
-    }
-
-    .choices {
-      margin-top: 30px;
-      display: none;
-      animation: fadeIn 1s forwards;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    button {
-      margin: 10px;
-      padding: 12px 30px;
-      border: 2px solid #ff4d6d;
-      border-radius: 50px;
-      background: transparent;
-      color: #ff4d6d;
-      font-size: 16px;
-      font-weight: bold;
-      font-family: 'Quicksand', sans-serif;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    button:hover {
-      background: #ff4d6d;
-      color: white;
-      box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
-    }
-
-    /* Sad/Cloudy Decoration for Rejection Page */
-    .heart {
-      position: absolute;
-      width: 20px; height: 20px;
-      background: rgba(255, 255, 255, 0.3);
-      border-radius: 50%;
-      animation: float 15s infinite linear;
-      bottom: -10vh;
-    }
-    @keyframes float {
-      0% { transform: translateY(0); opacity: 0; }
-      50% { opacity: 0.5; }
-      100% { transform: translateY(-120vh); opacity: 0; }
-    }
+    /* --- DESIGN PRESERVED --- */
+    body { margin: 0; padding: 0; font-family: 'Quicksand', sans-serif; background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fbc2eb, #a1c4fd); background-size: 400% 400%; animation: gradientBG 15s ease infinite; height: 100vh; display: flex; justify-content: center; align-items: center; flex-direction: column; text-align: center; overflow: hidden; }
+    @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+    .container { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); padding: 50px 30px; border-radius: 30px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); max-width: 85%; width: 420px; border: 1px solid rgba(255, 255, 255, 0.4); z-index: 10; }
+    .message { font-size: 20px; color: #444; line-height: 1.6; min-height: 80px; font-weight: 600; }
+    .cursor { display: inline-block; width: 3px; background-color: #ff4d6d; margin-left: 5px; animation: blink 0.8s infinite; }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
+    .choices { margin-top: 30px; display: none; animation: fadeIn 1s forwards; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    button { margin: 10px; padding: 12px 30px; border: 2px solid #ff4d6d; border-radius: 50px; background: transparent; color: #ff4d6d; font-size: 16px; font-weight: bold; font-family: 'Quicksand', sans-serif; cursor: pointer; transition: all 0.3s ease; }
+    button:hover { background: #ff4d6d; color: white; box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4); }
+    .heart { position: absolute; width: 20px; height: 20px; background: rgba(255, 255, 255, 0.3); border-radius: 50%; animation: float 15s infinite linear; bottom: -10vh; }
+    @keyframes float { 0% { transform: translateY(0); opacity: 0; } 50% { opacity: 0.5; } 100% { transform: translateY(-120vh); opacity: 0; } }
   </style>
 </head>
 <body>
@@ -128,11 +37,10 @@
     </div>
   </div>
 
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-<script>
-    // 1. CONFIGURATION
     const firebaseConfig = {
       apiKey: "AIzaSyDV_suRKZfNkHR5OJABEvDvf-CXSNfbG88",
       authDomain: "confession-4d848.firebaseapp.com",
@@ -143,10 +51,10 @@
       appId: "1:839865796935:web:e6911c8dddf6bd0e12a462"
     };
 
-    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const visitorName = localStorage.getItem('visitorName');
 
-    // 2. TYPING LOGIC
     const text = "I understand. I respect your feelings and I hope we can still be friends I guess?";
     const textEl = document.getElementById("text");
     const cursor = document.getElementById("cursor");
@@ -158,26 +66,20 @@
         const char = text.charAt(i);
         textEl.innerHTML += char;
         i++;
-
         let delay = 60;
         if (char === "?") delay = 400;
         if (char === ".") delay = 400;
-
         setTimeout(typeText, delay);
       } else {
         cursor.style.display = "none";
         choices.style.display = "block";
       }
     }
-    
     setTimeout(typeText, 500);
 
-    // 3. SAVING LOGIC
     function saveAndGo(msg, url) {
-        const visitorName = localStorage.getItem('visitorName');
-        
         if(visitorName) {
-            db.ref('her_response/' + visitorName).update({
+            update(ref(db, 'her_response/' + visitorName), {
                 log_whyyyy: msg,
                 last_updated: new Date().toISOString()
             }).then(() => window.location.href = url)
@@ -187,13 +89,8 @@
         }
     }
 
-    function goA() {
-      saveAndGo('Fine with being friends', 'really.html');
-    }
-
-    function goB() {
-      saveAndGo('Refused friendship', 'pleaseknowit.html');
-    }
-</script>
+    window.goA = function() { saveAndGo('Fine with being friends', 'really.html'); }
+    window.goB = function() { saveAndGo('Refused friendship', 'pleaseknowit.html'); }
+  </script>
 </body>
 </html>

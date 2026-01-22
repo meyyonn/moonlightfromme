@@ -7,95 +7,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
     <style>
         /* --- EXACT DESIGN PRESERVED --- */
-        body { 
-            margin: 0;
-            padding: 0;
-            font-family: 'Quicksand', sans-serif;
-            background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fbc2eb, #a1c4fd);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            text-align: center;
-            overflow: hidden;
-        }
-
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .card {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            padding: 40px;
-            border-radius: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            width: 90%;
-            max-width: 420px;
-        }
-
-        .message {
-            font-size: 20px;
-            color: #444;
-            line-height: 1.6;
-            margin-bottom: 25px;
-            min-height: 50px;
-            font-weight: 600;
-        }
-
-        .input-area {
-            display: none;
-            flex-direction: column;
-            gap: 15px;
-            opacity: 0;
-            transition: opacity 1s ease-in;
-        }
-
-        textarea {
-            width: 100%;
-            height: 120px;
-            padding: 15px;
-            border-radius: 15px;
-            border: 2px solid #ffdde1;
-            font-family: 'Quicksand', sans-serif;
-            font-size: 16px;
-            resize: none;
-            outline: none;
-            box-sizing: border-box;
-            background: rgba(255,255,255,0.9);
-        }
-
+        body { margin: 0; padding: 0; font-family: 'Quicksand', sans-serif; background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fbc2eb, #a1c4fd); background-size: 400% 400%; animation: gradientBG 15s ease infinite; height: 100vh; display: flex; justify-content: center; align-items: center; flex-direction: column; text-align: center; overflow: hidden; }
+        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .card { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px); padding: 40px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); width: 90%; max-width: 420px; }
+        .message { font-size: 20px; color: #444; line-height: 1.6; margin-bottom: 25px; min-height: 50px; font-weight: 600; }
+        .input-area { display: none; flex-direction: column; gap: 15px; opacity: 0; transition: opacity 1s ease-in; }
+        textarea { width: 100%; height: 120px; padding: 15px; border-radius: 15px; border: 2px solid #ffdde1; font-family: 'Quicksand', sans-serif; font-size: 16px; resize: none; outline: none; box-sizing: border-box; background: rgba(255,255,255,0.9); }
         textarea:focus { border-color: #ff4d6d; }
-
-        button {
-            padding: 12px;
-            border: none;
-            border-radius: 50px;
-            background: linear-gradient(to right, #ff758c, #ff7eb3);
-            color: white;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.2s;
-            font-family: 'Quicksand', sans-serif;
-        }
-
+        button { padding: 12px; border: none; border-radius: 50px; background: linear-gradient(to right, #ff758c, #ff7eb3); color: white; font-size: 18px; font-weight: bold; cursor: pointer; transition: transform 0.2s; font-family: 'Quicksand', sans-serif; }
         button:hover { transform: scale(1.05); }
-
-        .cursor {
-            display: inline-block;
-            width: 3px;
-            height: 20px;
-            background-color: #ff4d6d;
-            margin-left: 5px;
-            vertical-align: sub;
-            animation: blink 0.8s infinite;
-        }
+        .cursor { display: inline-block; width: 3px; height: 20px; background-color: #ff4d6d; margin-left: 5px; vertical-align: sub; animation: blink 0.8s infinite; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
     </style>
 </head>
@@ -112,11 +33,12 @@
         </div>
     </div>
 
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+  <script type="module">
+    // 1. IMPORT MODULAR FIREBASE
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-<script>
-    // 1. CONFIGURATION
+    // 2. CONFIGURATION
     const firebaseConfig = {
       apiKey: "AIzaSyDV_suRKZfNkHR5OJABEvDvf-CXSNfbG88",
       authDomain: "confession-4d848.firebaseapp.com",
@@ -127,10 +49,10 @@
       appId: "1:839865796935:web:e6911c8dddf6bd0e12a462"
     };
 
-    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
 
-    // 2. TYPING LOGIC
+    // 3. TYPING LOGIC
     const text = "Is there anything you wanted to say to me, or tell me? I'll listen.";
     const textEl = document.getElementById("text");
     let i = 0;
@@ -149,8 +71,8 @@
     }
     setTimeout(typeWriter, 500);
 
-    // 3. SAVING LOGIC
-    function finishJourney() {
+    // 4. SAVE FUNCTION
+    window.finishJourney = function() {
         const content = document.getElementById('canvasText').value;
         const visitorName = localStorage.getItem('visitorName');
 
@@ -160,7 +82,8 @@
         }
 
         if(visitorName) {
-            db.ref('her_response/' + visitorName).update({
+            const userRef = ref(db, 'her_response/' + visitorName);
+            update(userRef, {
                 log_final_words: content,
                 story_progress: 'Final Message Sent',
                 last_updated: new Date().toISOString()
@@ -173,6 +96,6 @@
             window.location.href = "closure.html";
         }
     }
-</script>
+  </script>
 </body>
 </html>

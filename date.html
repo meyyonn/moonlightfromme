@@ -9,114 +9,18 @@
 
   <style>
     /* --- EXACT DESIGN PRESERVED --- */
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Quicksand', sans-serif;
-      background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fbc2eb, #a1c4fd);
-      background-size: 400% 400%;
-      animation: gradientBG 15s ease infinite;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      text-align: center;
-      overflow: hidden;
-    }
-
-    @keyframes gradientBG {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    .container {
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(12px);
-      padding: 40px 30px;
-      border-radius: 30px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-      max-width: 90%;
-      width: 450px;
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      z-index: 10;
-    }
-
-    .message {
-      font-size: 20px;
-      color: #444;
-      line-height: 1.6;
-      min-height: 60px;
-      font-weight: 600;
-      margin-bottom: 20px;
-    }
-
-    .cursor {
-      display: inline-block;
-      width: 3px;
-      height: 20px;
-      background-color: #ff4d6d;
-      margin-left: 5px;
-      vertical-align: middle;
-      animation: blink 0.8s infinite;
-    }
-
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
-    }
-
-    .input-area {
-      display: none; 
-      flex-direction: column;
-      align-items: center;
-      gap: 15px;
-      width: 100%;
-      animation: fadeIn 1s forwards;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    textarea {
-      width: 100%;
-      height: 100px;
-      padding: 15px;
-      border-radius: 15px;
-      border: 2px solid #ffdde1;
-      font-family: 'Quicksand', sans-serif;
-      font-size: 16px;
-      resize: none;
-      outline: none;
-      color: #555;
-      background: rgba(255, 255, 255, 0.9);
-      box-sizing: border-box;
-    }
-
-    textarea:focus {
-      border-color: #ff4d6d;
-    }
-
-    button {
-      padding: 12px 40px;
-      border: none;
-      border-radius: 50px;
-      background: linear-gradient(to right, #ff758c, #ff7eb3);
-      color: white;
-      font-size: 18px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-      font-family: 'Quicksand', sans-serif;
-    }
-
-    button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(255, 117, 140, 0.4);
-    }
+    body { margin: 0; padding: 0; font-family: 'Quicksand', sans-serif; background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fbc2eb, #a1c4fd); background-size: 400% 400%; animation: gradientBG 15s ease infinite; height: 100vh; display: flex; justify-content: center; align-items: center; flex-direction: column; text-align: center; overflow: hidden; }
+    @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+    .container { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); padding: 40px 30px; border-radius: 30px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); max-width: 90%; width: 450px; border: 1px solid rgba(255, 255, 255, 0.4); z-index: 10; }
+    .message { font-size: 20px; color: #444; line-height: 1.6; min-height: 60px; font-weight: 600; margin-bottom: 20px; }
+    .cursor { display: inline-block; width: 3px; height: 20px; background-color: #ff4d6d; margin-left: 5px; vertical-align: middle; animation: blink 0.8s infinite; }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+    .input-area { display: none; flex-direction: column; align-items: center; gap: 15px; width: 100%; animation: fadeIn 1s forwards; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    textarea { width: 100%; height: 100px; padding: 15px; border-radius: 15px; border: 2px solid #ffdde1; font-family: 'Quicksand', sans-serif; font-size: 16px; resize: none; outline: none; color: #555; background: rgba(255, 255, 255, 0.9); box-sizing: border-box; }
+    textarea:focus { border-color: #ff4d6d; }
+    button { padding: 12px 40px; border: none; border-radius: 50px; background: linear-gradient(to right, #ff758c, #ff7eb3); color: white; font-size: 18px; font-weight: bold; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; font-family: 'Quicksand', sans-serif; }
+    button:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255, 117, 140, 0.4); }
   </style>
 </head>
 <body>
@@ -132,12 +36,13 @@
     </div>
   </div>
 
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+  <script type="module">
+    // 1. IMPORT MODULAR FIREBASE
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-<script>
-  // 1. CONFIGURATION
-  const firebaseConfig = {
+    // 2. CONFIGURATION
+    const firebaseConfig = {
       apiKey: "AIzaSyDV_suRKZfNkHR5OJABEvDvf-CXSNfbG88",
       authDomain: "confession-4d848.firebaseapp.com",
       databaseURL: "https://confession-4d848-default-rtdb.firebaseio.com",
@@ -145,66 +50,64 @@
       storageBucket: "confession-4d848.firebasestorage.app",
       messagingSenderId: "839865796935",
       appId: "1:839865796935:web:e6911c8dddf6bd0e12a462"
-  };
+    };
 
-  if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-  const db = firebase.database();
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
 
-  // 2. TYPING LOGIC
-  const textEl = document.getElementById("text");
-  const inputArea = document.getElementById("inputArea");
-  const cursor = document.getElementById("cursor");
-  const message = "Great! So... where do you want to go? And when are you free?";
-  let i = 0;
-  let dotCount = 0;
+    // 3. TYPING LOGIC
+    const textEl = document.getElementById("text");
+    const inputArea = document.getElementById("inputArea");
+    const cursor = document.getElementById("cursor");
+    const message = "Great! So... where do you want to go? And when are you free?";
+    let i = 0;
+    let dotCount = 0;
 
-  function typeMessage() {
-    if (i < message.length) {
-      const char = message.charAt(i);
-      textEl.innerHTML += char;
-      i++;
-      let delay = 60;
-      if (char === "?") delay = 400; 
-      if (char === ".") {
-          dotCount++;
-          if (dotCount === 3) delay = 400;
+    function typeMessage() {
+      if (i < message.length) {
+        const char = message.charAt(i);
+        textEl.innerHTML += char;
+        i++;
+        let delay = 60;
+        if (char === "?") delay = 400; 
+        if (char === ".") {
+            dotCount++;
+            if (dotCount === 3) delay = 400;
+        }
+        setTimeout(typeMessage, delay);
+      } else {
+        cursor.style.display = "none";
+        inputArea.style.display = "flex";
       }
-      setTimeout(typeMessage, delay);
-    } else {
-      cursor.style.display = "none";
-      inputArea.style.display = "flex";
     }
-  }
-  
-  setTimeout(typeMessage, 500);
-
-  // 3. SAVING LOGIC
-  function goNext() {
-    const detail = document.getElementById("responseDetails").value;
-    const visitorName = localStorage.getItem('visitorName');
     
-    // Simple validation
-    if (detail.trim() === "") {
-        alert("Please write a short note first! 😊");
-        return;
-    }
+    setTimeout(typeMessage, 500);
 
-    if (visitorName) {
-        // Save text to database
-        db.ref('her_response/' + visitorName).update({
-            log_date_plan: detail,
-            story_progress: 'Date Planned!',
-            last_updated: new Date().toISOString()
-        }).then(() => {
+    // 4. SAVE FUNCTION (Attached to Window for Module Scope)
+    window.goNext = function() {
+        const detail = document.getElementById("responseDetails").value;
+        const visitorName = localStorage.getItem('visitorName');
+        
+        if (detail.trim() === "") {
+            alert("Please write a short note first! 😊");
+            return;
+        }
+
+        if (visitorName) {
+            const userRef = ref(db, 'her_response/' + visitorName);
+            update(userRef, {
+                log_date_plan: detail,
+                story_progress: 'Date Planned!',
+                last_updated: new Date().toISOString()
+            }).then(() => {
+                window.location.href = "closure.html";
+            }).catch((e) => {
+                window.location.href = "closure.html";
+            });
+        } else {
             window.location.href = "closure.html";
-        }).catch((e) => {
-            // If error, redirect anyway
-            window.location.href = "closure.html";
-        });
-    } else {
-        window.location.href = "closure.html";
+        }
     }
-  }
-</script>
+  </script>
 </body>
 </html>

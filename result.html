@@ -3,38 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Confession Dashboard</title>
+    <title>Confession Results - Master View</title>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Quicksand', sans-serif;
-            background-color: #f0f2f5;
+            background-color: #f8f9fa;
             margin: 0;
-            padding: 40px;
+            padding: 20px;
             color: #333;
         }
 
         h1 {
             text-align: center;
             color: #ff4d6d;
-            margin-bottom: 40px;
-            font-size: 2.5rem;
+            margin-bottom: 20px;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
+        .table-wrapper {
+            max-width: 100%;
+            overflow-x: auto; /* Allows scrolling for many columns */
             background: white;
             padding: 20px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            overflow-x: auto; /* Handles small screens */
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
+            min-width: 3200px; /* Wide enough for 20 columns */
         }
 
         th {
@@ -42,84 +41,112 @@
             color: #ff4d6d;
             padding: 15px;
             text-align: left;
-            border-radius: 8px;
-            font-weight: 700;
+            border-bottom: 2px solid #ff4d6d;
+            position: sticky;
+            top: 0;
+            font-size: 14px;
+            z-index: 5;
         }
 
         td {
-            padding: 15px;
+            padding: 12px;
             border-bottom: 1px solid #eee;
             vertical-align: top;
+            font-size: 13px;
         }
 
-        tr:last-child td {
-            border-bottom: none;
+        tr:hover {
+            background-color: #fff5f7;
         }
 
-        /* --- BADGES FOR STATUS --- */
-        .badge {
-            padding: 5px 10px;
-            border-radius: 50px;
+        /* Styling for "Message not in her way" */
+        .skipped {
+            color: #ccc;
+            font-style: italic;
             font-size: 12px;
-            font-weight: bold;
+        }
+
+        /* Styling for actual answers */
+        .answer {
+            color: #2d3748;
+            font-weight: 600;
+            background: #eef2ff;
+            padding: 5px 10px;
+            border-radius: 6px;
             display: inline-block;
         }
 
-        .badge-green { background: #d1fae5; color: #065f46; } /* Accepted */
-        .badge-red { background: #fee2e2; color: #991b1b; }   /* Rejected */
-        .badge-yellow { background: #fef3c7; color: #92400e; } /* Negotiating/Maybe */
-        .badge-blue { background: #dbeafe; color: #1e40af; }   /* In Progress */
+        /* Highlights for the 3 main text answers */
+        .text-answer {
+            background: #d1fae5;
+            color: #065f46;
+            max-width: 250px;
+            white-space: pre-wrap;
+        }
 
-        /* --- TEXT STYLES --- */
-        .timestamp {
-            font-size: 12px;
-            color: #999;
-            margin-top: 5px;
+        /* Sticky Name Column */
+        .name-col {
+            font-weight: bold;
+            font-size: 15px;
+            color: #ff4d6d;
+            position: sticky;
+            left: 0;
+            background: white; 
+            border-right: 2px solid #eee;
+            z-index: 10;
+            min-width: 150px;
         }
         
-        .empty-state {
-            text-align: center;
-            padding: 40px;
-            color: #999;
-            font-style: italic;
-        }
-
-        .message-box {
-            background: #f9f9f9;
-            padding: 10px;
-            border-radius: 8px;
-            border-left: 3px solid #ff4d6d;
-            font-size: 14px;
-            margin-top: 5px;
+        /* Ensure sticky header over sticky column works */
+        th.name-col {
+            z-index: 20;
+            background-color: #ffeff1;
         }
     </style>
 </head>
 <body>
 
-    <h1>❤️ Confession Results</h1>
+    <h1>Master Results Dashboard</h1>
 
-    <div class="container">
+    <div class="table-wrapper">
         <table id="resultsTable">
             <thead>
                 <tr>
-                    <th width="15%">Name</th>
-                    <th width="15%">Status</th>
-                    <th width="20%">Confession Response</th>
-                    <th width="20%">Date / Hangout</th>
-                    <th width="30%">Final Message / Plan</th>
+                    <th class="name-col">Visitor Name</th>
+                    
+                    <th>1. You Know Right?</th>
+                    <th>2. Really Like You?</th>
+                    <th>3. Mortifying?</th>
+                    <th>4. Cute/Gorgeous?</th>
+                    <th>5. Attention?</th>
+                    <th>6. Main Decision</th>
+                    <th>7. Rejection Why?</th>
+                    <th>8. Negotiate Friend</th>
+                    <th>9. Please/Hesitate</th>
+                    <th>10. Changed Mind 1</th>
+                    <th>11. Addressing Change</th>
+                    <th>12. Regular Friend</th>
+                    <th>13. Changed Mind 2</th>
+                    <th>14. Secrets?</th>
+                    <th>15. Hangout?</th>
+                    <th>16. Progress Status</th>
+
+                    <th style="min-width:200px;">📝 Date Plan</th>
+                    <th style="min-width:200px;">📝 Apology Reply</th>
+                    <th style="min-width:200px;">📝 Final Words</th>
                 </tr>
             </thead>
             <tbody id="tableBody">
-                </tbody>
+                <tr><td colspan="20" style="text-align:center; padding: 30px;">Loading data... 📡</td></tr>
+            </tbody>
         </table>
-        <div id="loading" class="empty-state">Connecting to satellite... 📡</div>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-    <script>
-        // 1. CONFIGURATION
+        // CONFIGURATION
         const firebaseConfig = {
             apiKey: "AIzaSyDV_suRKZfNkHR5OJABEvDvf-CXSNfbG88",
             authDomain: "confession-4d848.firebaseapp.com",
@@ -130,93 +157,64 @@
             appId: "1:839865796935:web:e6911c8dddf6bd0e12a462"
         };
 
-        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
 
-        // 2. FETCH DATA (Real-time listener)
-        const resultsRef = db.ref('her_response');
+        const resultsRef = ref(db, 'her_response');
 
-        resultsRef.on('value', (snapshot) => {
+        onValue(resultsRef, (snapshot) => {
             const data = snapshot.val();
             const tbody = document.getElementById('tableBody');
-            const loading = document.getElementById('loading');
-            
-            tbody.innerHTML = ""; // Clear table to avoid duplicates
-            loading.style.display = "none";
+            tbody.innerHTML = ""; // Clear loader
 
             if (data) {
-                // Firebase returns an Object. We convert it to an Array to sort by time.
-                const entries = Object.keys(data).map(key => data[key]);
-                
-                // Sort: Newest first
-                entries.sort((a, b) => new Date(b.last_updated) - new Date(a.last_updated));
+                // Convert object to array and sort by last_updated (newest first)
+                const sortedData = Object.entries(data).sort(([,a], [,b]) => {
+                    return new Date(b.last_updated || 0) - new Date(a.last_updated || 0);
+                });
 
-                entries.forEach(user => {
+                sortedData.forEach(([key, user]) => {
                     const row = document.createElement('tr');
-                    
-                    // --- 1. NAME ---
-                    const nameCell = `
-                        <td>
-                            <strong>${user.resp_name || 'Anonymous'}</strong>
-                            <div class="timestamp">${formatTime(user.last_updated)}</div>
-                        </td>`;
 
-                    // --- 2. STATUS (Badge Logic) ---
-                    let statusBadge = '';
-                    let progress = user.story_progress || 'Started';
-                    
-                    if(progress.includes('YES') || progress.includes('Accepted')) {
-                        statusBadge = `<span class="badge badge-green">${progress}</span>`;
-                    } else if (progress.includes('NO') || progress.includes('Rejected')) {
-                        statusBadge = `<span class="badge badge-red">${progress}</span>`;
-                    } else if (progress.includes('MAYBE') || progress.includes('Negotiate')) {
-                        statusBadge = `<span class="badge badge-yellow">${progress}</span>`;
-                    } else {
-                        statusBadge = `<span class="badge badge-blue">${progress}</span>`;
-                    }
-                    const statusCell = `<td>${statusBadge}</td>`;
+                    // Helper: If value exists, show it. If not, show skipped message.
+                    const getCell = (val, isText = false) => {
+                        if (!val) return `<span class="skipped">Message not in her way</span>`;
+                        const cssClass = isText ? 'answer text-answer' : 'answer';
+                        return `<div class="${cssClass}">${val}</div>`;
+                    };
 
-                    // --- 3. CONFESSION DECISION ---
-                    // It could be in 'choice_decision', 'log_negotiate', or 'log_changed_mind'
-                    let confessionText = user.choice_decision || '-';
-                    if(user.log_negotiate) confessionText += `<br><small>(${user.log_negotiate})</small>`;
-                    if(user.log_changed_mind) confessionText += `<br><span class="badge badge-yellow">Changed Mind!</span>`;
-                    
-                    const confessionCell = `<td>${confessionText}</td>`;
+                    const nameDisplay = (user.name || key).toUpperCase(); 
 
-                    // --- 4. HANGOUT / DATE ---
-                    const hangoutCell = `<td>${user.log_hangout || '-'}</td>`;
+                    row.innerHTML = `
+                        <td class="name-col">${nameDisplay}</td>
+                        
+                        <td>${getCell(user.ykr_choice)}</td>
+                        <td>${getCell(user.log_reallylike)}</td>
+                        <td>${getCell(user.log_mortifying)}</td>
+                        <td>${getCell(user.log_cute)}</td>
+                        <td>${getCell(user.log_attention)}</td>
+                        <td>${getCell(user.choice_decision)}</td>
+                        <td>${getCell(user.log_whyyyy)}</td>
+                        <td>${getCell(user.log_negotiate)}</td>
+                        <td>${getCell(user.log_please)}</td>
+                        <td>${getCell(user.log_changed_mind)}</td>
+                        <td>${getCell(user.choice_addressing)}</td>
+                        <td>${getCell(user.log_regular)}</td>
+                        <td>${getCell(user.log_changed_mind_2)}</td>
+                        <td>${getCell(user.log_secrets)}</td>
+                        <td>${getCell(user.log_hangout)}</td>
+                        <td>${getCell(user.story_progress)}</td>
 
-                    // --- 5. FINAL MESSAGES (Combine all inputs) ---
-                    let messages = [];
-                    if(user.log_date_plan) messages.push(`<strong>Plan:</strong> ${user.log_date_plan}`);
-                    if(user.log_final_words) messages.push(`<strong>Final Words:</strong> ${user.log_final_words}`);
-                    if(user.log_apology_message) messages.push(`<strong>Apology Reply:</strong> ${user.log_apology_message}`);
-                    if(user.log_secrets) messages.push(`<strong>Secret:</strong> ${user.log_secrets}`);
-                    
-                    let messageHtml = messages.length > 0 
-                        ? `<div class="message-box">${messages.join('<br><br>')}</div>` 
-                        : '<span style="color:#ccc">No text yet</span>';
-                    
-                    const messageCell = `<td>${messageHtml}</td>`;
-
-                    // Combine Row
-                    row.innerHTML = nameCell + statusCell + confessionCell + hangoutCell + messageCell;
+                        <td>${getCell(user.log_date_plan, true)}</td>
+                        <td>${getCell(user.log_apology_message, true)}</td>
+                        <td>${getCell(user.log_final_words, true)}</td>
+                    `;
                     tbody.appendChild(row);
                 });
             } else {
-                loading.style.display = "block";
-                loading.innerText = "No responses recorded yet.";
+                tbody.innerHTML = `<tr><td colspan="20" style="text-align:center;">No data found in Database.</td></tr>`;
             }
         });
-
-        // Helper to format time nicely
-        function formatTime(isoString) {
-            if(!isoString) return '';
-            const date = new Date(isoString);
-            return date.toLocaleString(); // e.g., "10/25/2023, 10:30 AM"
-        }
-
     </script>
 </body>
 </html>

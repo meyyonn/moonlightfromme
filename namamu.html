@@ -6,12 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
-  
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
   <style>
-    /* --- YOUR ORIGINAL BEAUTIFUL CSS --- */
+    /* --- YOUR ORIGINAL BEAUTIFUL DESIGN --- */
     body { margin: 0; padding: 0; font-family: 'Quicksand', sans-serif; background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #ffd1ff, #fbc2eb); background-size: 400% 400%; animation: gradientBG 15s ease infinite; height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden; position: relative; }
     @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
     .container { background: rgba(255, 255, 255, 0.85); padding: 40px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); text-align: center; width: 90%; max-width: 350px; border: 1px solid rgba(255, 255, 255, 0.5); z-index: 10; }
@@ -41,22 +38,8 @@
   </div>
 
 <script>
-  // 1. CONFIGURATION
-  const firebaseConfig = {
-      apiKey: "AIzaSyDV_suRKZfNkHR5OJABEvDvf-CXSNfbG88",
-      authDomain: "confession-4d848.firebaseapp.com",
-      databaseURL: "https://confession-4d848-default-rtdb.firebaseio.com",
-      projectId: "confession-4d848",
-      storageBucket: "confession-4d848.firebasestorage.app",
-      messagingSenderId: "839865796935",
-      appId: "1:839865796935:web:e6911c8dddf6bd0e12a462"
-  };
-
-  if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-  const db = firebase.database();
-
   function startJourney() {
-    // Convert to lowercase to make matching easier
+    // 1. Get Value
     const input = document.getElementById("nameInput").value.trim().toLowerCase();
     const btn = document.querySelector("button");
     const info = document.getElementById("info");
@@ -64,37 +47,24 @@
     const herNames = ["nurainni", "ainni", "nur ainni"]; 
     const yourName = ["amirul", "mirul", "myadmin"]; 
 
-    // --- LOGIC FROM YOUR PROTOTYPE ---
-    
+    // 2. Logic (Like index.html - No Firebase here, just storage & redirect)
     if (herNames.includes(input)) {
-        btn.innerText = "Connecting...";
-
-        // 1. SESSION: Save name to browser (so other pages know who she is)
+        btn.innerText = "Welcome...";
+        
+        // Save Session
         localStorage.setItem('visitorName', input);
-
-        // 2. PATH: We use 'her_response/' + input to create a specific folder for HER
-        const userRef = db.ref('her_response/' + input);
-
-        // 3. SET: We use .set() to START FRESH (Initialize the journey)
-        // This mirrors how you did it in question1.html
-        userRef.set({
-            name: input,
-            startTime: new Date().toISOString(),
-            status: "Started Journey"
-        }).then(() => {
-            window.location.href = "importance.html"; 
-        }).catch((e) => {
-            console.error(e);
-            // Even if offline, let her in
+        
+        // Go Next (We will start the DB in importance.html now)
+        setTimeout(() => {
             window.location.href = "importance.html";
-        });
+        }, 500);
     } 
     else if (yourName.includes(input)) {
-        // Admin just goes to dashboard
+        // Admin
         window.location.href = "result.html"; 
     } 
     else {
-        // Wrong person
+        // Error
         info.style.display = "block";
         const inputField = document.getElementById("nameInput");
         inputField.style.border = "2px solid red";
