@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Okay I wasn't expexting that</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fbc2eb, #a1c4fd);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Glass Container */
+    .container {
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: blur(12px);
+      padding: 50px 30px;
+      border-radius: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      max-width: 85%;
+      width: 450px;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      z-index: 10;
+      animation: floatBox 4s ease-in-out infinite;
+    }
+
+    .message {
+      font-size: 20px;
+      color: #444;
+      line-height: 1.8;
+      min-height: 100px;
+      font-weight: 600;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 3px;
+      height: 20px;
+      background-color: #ff4d6d;
+      margin-left: 5px;
+      vertical-align: middle;
+      animation: blink 0.8s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    button {
+      margin-top: 30px;
+      padding: 15px 40px;
+      border: none;
+      border-radius: 50px;
+      background: linear-gradient(45deg, #ff4d6d, #ff758c);
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      display: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(255, 77, 109, 0.3);
+      font-family: 'Quicksand', sans-serif;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(255, 77, 109, 0.5);
+    }
+
+    /* Floating Heart Decorations */
+    .heart {
+      position: absolute;
+      width: 20px; height: 20px;
+      background: rgba(255, 255, 255, 0.4);
+      transform: rotate(45deg);
+      animation: floatUp 10s infinite linear;
+      bottom: -10vh;
+    }
+    .heart::before, .heart::after {
+      content: '';
+      position: absolute;
+      width: 20px; height: 20px;
+      background: inherit;
+      border-radius: 50%;
+    }
+    .heart::before { top: -10px; left: 0; }
+    .heart::after { top: 0; left: -10px; }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) rotate(45deg); opacity: 0; }
+      50% { opacity: 0.6; }
+      100% { transform: translateY(-120vh) rotate(45deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="heart" style="left: 10%; animation-duration: 8s;"></div>
+  <div class="heart" style="left: 25%; animation-duration: 15s; width: 30px; height: 30px;"></div>
+  <div class="heart" style="left: 75%; animation-duration: 12s;"></div>
+  <div class="heart" style="left: 90%; animation-duration: 9s; width: 40px; height: 40px;"></div>
+
+  <div class="container">
+    <div class="message">
+      <span id="text"></span><span id="cursor" class="cursor"></span>
+    </div>
+
+    <button id="nextBtn" onclick="goNext()">No</button>
+  </div>
+
+<script>
+    // Changed "wait…" to "wait..." (3 separate dots) for the logic to work
+    const text = "Wait, you agreed? It doesn’t feel weird to you?"; 
+    const textEl = document.getElementById("text");
+    const cursor = document.getElementById("cursor");
+    const nextBtn = document.getElementById("nextBtn");
+    let i = 0;
+	let dotCount = 0;
+
+    function typeText() {
+        if (i < text.length) {
+            const char = text.charAt(i);
+            textEl.innerHTML += char;
+            i++;
+
+            let delay = 60; // Normal typing speed
+
+            // Pause at question marks
+            if (char === "?") delay = 400; 
+
+            // Pause at question marks
+            if (char === ",") delay = 400; 
+
+            // Pause at question marks
+            if (char === ".") {
+                dotCount++;
+                if (dotCount === 3) { // third dot
+                    delay = 400;
+                }
+            } 
+
+
+            setTimeout(typeText, delay);
+        } else {
+            cursor.style.display = "none";
+            nextBtn.style.display = "inline-block";
+        }
+    }
+
+    function goNext() {
+        // Log that the user is comfortable with the new nicknames
+        localStorage.setItem('addressing_status', 'Comfortable (Not Weird)');
+        window.location.href = "itsnotweirdeh.html";
+    }
+
+    // Small delay before starting to type
+    setTimeout(typeText, 800);
+</script>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script> <script src="firebase-config.js"></script>
+</body>
+</html>

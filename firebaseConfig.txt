@@ -1,0 +1,38 @@
+// firebase-config.js
+
+// 1. YOUR CONFIGURATION
+const firebaseConfig = {
+    apiKey: "AIzaSyDV_suRKZfNkHR5OJABEvDvf-CXSNfbG88",
+    authDomain: "confession-4d848.firebaseapp.com",
+    databaseURL: "https://confession-4d848-default-rtdb.firebaseio.com", // <--- I added this for you!
+    projectId: "confession-4d848",
+    storageBucket: "confession-4d848.firebasestorage.app",
+    messagingSenderId: "839865796935",
+    appId: "1:839865796935:web:e6911c8dddf6bd0e12a462"
+};
+
+// 2. INITIALIZE FIREBASE
+// Check if firebase is already loaded
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
+
+// 3. START THE DATABASE
+const db = firebase.database();
+console.log("🔥 Realtime Database Connected!");
+
+// 4. THE MAGIC SAVER (Auto-Save to Cloud)
+// This code listens to your site. When it saves a name locally,
+// it instantly copies it to the online database.
+const originalSetItem = localStorage.setItem;
+
+localStorage.setItem = function(key, value) {
+    // Save to phone (keep original behavior)
+    originalSetItem.apply(this, [key, value]);
+
+    // Save to Cloud (Realtime Database)
+    db.ref('her_response').update({
+        [key]: value,
+        last_updated: Date.now() // Adds a timestamp
+    }).catch(error => console.error("Error saving to cloud:", error));
+};

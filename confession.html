@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>A Message For You</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Quicksand', sans-serif;
+      /* Soft pink/lavender moving background */
+      background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fbc2eb, #a1c4fd);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Glass Container */
+    .container {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      padding: 50px 30px;
+      border-radius: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      max-width: 85%;
+      width: 400px;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      z-index: 10;
+    }
+
+    .message {
+      font-size: 22px;
+      color: #444;
+      line-height: 1.6;
+      min-height: 80px; /* Prevents container from jumping */
+      font-weight: 600;
+    }
+
+    /* Typing Cursor */
+    .cursor {
+      display: inline-block;
+      width: 3px;
+      background-color: #ff4d6d;
+      margin-left: 5px;
+      animation: blink 0.8s infinite;
+    }
+
+    @keyframes blink {
+      0% { opacity: 1; }
+      50% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    /* Styled Button */
+    button {
+      margin-top: 30px;
+      padding: 15px 40px;
+      border: none;
+      border-radius: 50px;
+      background: linear-gradient(45deg, #ff4d6d, #ff758c);
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      font-family: 'Quicksand', sans-serif;
+      cursor: pointer;
+      display: none; /* Hidden until typing finishes */
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(255, 77, 109, 0.3);
+    }
+
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(255, 77, 109, 0.5);
+      background: linear-gradient(45deg, #e63e5c, #ff4d6d);
+    }
+
+    /* Floating Heart Background Decoration */
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: rgba(255, 255, 255, 0.4);
+      transform: rotate(45deg);
+      animation: float 10s infinite linear;
+      bottom: -10vh;
+    }
+    .heart::before, .heart::after {
+      content: '';
+      position: absolute;
+      width: 20px; height: 20px;
+      background: inherit;
+      border-radius: 50%;
+    }
+    .heart::before { top: -10px; left: 0; }
+    .heart::after { top: 0; left: -10px; }
+
+    @keyframes float {
+      0% { transform: translateY(0) rotate(45deg); opacity: 0; }
+      50% { opacity: 0.6; }
+      100% { transform: translateY(-120vh) rotate(45deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="heart" style="left: 15%; animation-duration: 7s;"></div>
+  <div class="heart" style="left: 45%; animation-duration: 12s; width: 30px; height: 30px;"></div>
+  <div class="heart" style="left: 85%; animation-duration: 9s;"></div>
+
+  <div class="container">
+    <div class="message">
+      <span id="text"></span><span id="cursor" class="cursor">&nbsp;</span>
+    </div>
+
+    <button id="nextBtn" onclick="goNext()">Next</button>
+  </div>
+
+<script>
+  const text = "Hey you, I made this website just for you...";
+  const textEl = document.getElementById("text");
+  const cursor = document.getElementById("cursor");
+  const nextBtn = document.getElementById("nextBtn");
+  let i = 0;
+  let dotCount = 0;
+
+  function typeText() {
+    if (i < text.length) {
+      const char = text.charAt(i);
+      textEl.innerHTML += char;
+      i++;
+
+      let delay = 60; // Slightly slower for more "feeling"
+
+      if (char === ",") {
+        delay = 400; // Pause at comma
+      }
+	  if (char === ".") {
+        dotCount++;
+            if (dotCount === 3) { // third dot
+                delay = 400;
+            }
+        }
+
+      setTimeout(typeText, delay);
+    } else {
+      cursor.style.display = "none";
+      // Fade in the button
+      nextBtn.style.display = "inline-block";
+      nextBtn.style.animation = "fadeIn 1s forwards";
+    }
+  }
+
+  function goNext() {
+    localStorage.setItem('log_confession', 'Started Reading');
+
+    window.location.href = "truth.html"; // or whatever your next page is
+  }
+
+  // Start typing after a small initial delay
+  setTimeout(typeText, 800);
+</script>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script> <script src="firebase-config.js"></script>
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Just a Regular Friend eh?</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* --- EXACT DESIGN PRESERVED --- */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fbc2eb, #a1c4fd);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      padding: 50px 30px;
+      border-radius: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      max-width: 85%;
+      width: 420px;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      z-index: 10;
+    }
+
+    .message {
+      font-size: 20px;
+      color: #444;
+      line-height: 1.6;
+      min-height: 80px;
+      font-weight: 600;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 3px;
+      background-color: #ff4d6d;
+      margin-left: 5px;
+      animation: blink 0.8s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    .choices {
+      margin-top: 30px;
+      display: none;
+      animation: fadeIn 1s forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    button {
+      margin: 10px;
+      padding: 12px 30px;
+      border: 2px solid #ff4d6d;
+      border-radius: 50px;
+      background: transparent;
+      color: #ff4d6d;
+      font-size: 16px;
+      font-weight: bold;
+      font-family: 'Quicksand', sans-serif;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background: #ff4d6d;
+      color: white;
+      box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+    }
+
+    .heart {
+      position: absolute;
+      width: 20px; height: 20px;
+      background: rgba(255, 255, 255, 0.4);
+      transform: rotate(45deg);
+      animation: float 10s infinite linear;
+      bottom: -10vh;
+    }
+    @keyframes float {
+      0% { transform: translateY(0) rotate(45deg); opacity: 0; }
+      50% { opacity: 0.6; }
+      100% { transform: translateY(-120vh) rotate(45deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="heart" style="left: 15%; animation-duration: 9s;"></div>
+  <div class="heart" style="left: 75%; animation-duration: 14s;"></div>
+
+  <div class="container">
+    <div class="message">
+      <span id="text"></span><span id="cursor" class="cursor">&nbsp;</span>
+    </div>
+
+    <div class="choices" id="choices">
+      <button onclick="goA()">Wait!</button>
+      <button onclick="goB()">Yes</button>
+    </div>
+  </div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+<script>
+    // 1. CONFIGURATION
+    const firebaseConfig = {
+      apiKey: "AIzaSyDV_suRKZfNkHR5OJABEvDvf-CXSNfbG88",
+      authDomain: "confession-4d848.firebaseapp.com",
+      databaseURL: "https://confession-4d848-default-rtdb.firebaseio.com",
+      projectId: "confession-4d848",
+      storageBucket: "confession-4d848.firebasestorage.app",
+      messagingSenderId: "839865796935",
+      appId: "1:839865796935:web:e6911c8dddf6bd0e12a462"
+    };
+
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // 2. TYPING LOGIC
+    const text = "Yeah, sure. If that’s the case, we’ll just stay as regular friends, like you wanted.";
+    const textEl = document.getElementById("text");
+    const cursor = document.getElementById("cursor");
+    const choices = document.getElementById("choices");
+    let i = 0;
+
+    function typeText() {
+      if (i < text.length) {
+        const char = text.charAt(i);
+        textEl.innerHTML += char;
+        i++;
+
+        let delay = 60;
+        if (char === ",") delay = 400;
+        if (char === ".") delay = 400;
+
+        setTimeout(typeText, delay);
+      } else {
+        cursor.style.display = "none";
+        choices.style.display = "block";
+      }
+    }
+    
+    setTimeout(typeText, 500);
+
+    // 3. SAVING LOGIC
+    function saveAndGo(msg, url) {
+        const visitorName = localStorage.getItem('visitorName');
+        if(visitorName) {
+            db.ref('her_response/' + visitorName).update({
+                log_regular: msg,
+                last_updated: new Date().toISOString()
+            }).then(() => window.location.href = url)
+              .catch(() => window.location.href = url);
+        } else {
+            window.location.href = url;
+        }
+    }
+
+    function goA() {
+      saveAndGo('Hesitated (Wait!)', 'changedmind2.html');
+    }
+
+    function goB() {
+      saveAndGo('Accepted Regular Friend', 'yesfriend.html');
+    }
+</script>
+</body>
+</html>

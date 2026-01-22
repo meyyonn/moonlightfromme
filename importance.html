@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>A Moment before start</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Quicksand', sans-serif;
+      /* The same lovely gradient from before */
+      background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fbc2eb, #a1c4fd);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Fog Overlay */
+    .fog {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.2); /* Light fog */
+      backdrop-filter: blur(4px);
+      z-index: 2;
+      pointer-events: none;
+      animation: fogPulse 4s ease-in-out infinite;
+    }
+
+    @keyframes fogPulse {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.7; }
+    }
+
+    /* Glass Container */
+    .container {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(15px);
+      padding: 50px 30px;
+      border-radius: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      max-width: 85%;
+      width: 450px;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      z-index: 10;
+    }
+
+    .warning-text {
+      font-size: 22px;
+      color: #444;
+      font-weight: 600;
+      line-height: 1.6;
+      opacity: 0;
+      /* Fade In, Stay, then Fade Out */
+      animation: fadeInOut 6s forwards;
+    }
+
+    @keyframes fadeInOut {
+      0% { opacity: 0; transform: scale(0.98); }
+      15% { opacity: 1; transform: scale(1); }
+      85% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0; transform: scale(1.02); }
+    }
+
+    /* Floating Hearts (to match previous pages) */
+    .heart {
+      position: absolute;
+      width: 20px; height: 20px;
+      background: rgba(255, 255, 255, 0.5);
+      transform: rotate(45deg);
+      animation: floatUp 10s infinite linear;
+      bottom: -10vh;
+      z-index: 1;
+    }
+    .heart::before, .heart::after {
+      content: '';
+      position: absolute;
+      width: 20px; height: 20px;
+      background: inherit;
+      border-radius: 50%;
+    }
+    .heart::before { top: -10px; left: 0; }
+    .heart::after { top: 0; left: -10px; }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) rotate(45deg); opacity: 0; }
+      50% { opacity: 0.6; }
+      100% { transform: translateY(-120vh) rotate(45deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="fog"></div>
+
+  <div class="heart" style="left: 15%; animation-duration: 8s;"></div>
+  <div class="heart" style="left: 70%; animation-duration: 12s;"></div>
+
+  <div class="container">
+    <div class="warning-text">
+      Please read the message and the options carefully... <br><br>
+      And choose your heart's answer wisely.
+    </div>
+  </div>
+
+  <script>
+    // Redirect after the animation finishes
+    setTimeout(() => {
+      window.location.href = "confession.html"; 
+    }, 6500);
+  </script>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script> <script src="firebase-config.js"></script>
+</body>
+</html>

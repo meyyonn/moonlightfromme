@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Invitation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* --- EXACT DESIGN PRESERVED --- */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fbc2eb, #a1c4fd);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      padding: 40px 25px;
+      border-radius: 30px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+      max-width: 85%;
+      width: 450px;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      z-index: 10;
+    }
+
+    .message {
+      font-size: 20px;
+      color: #444;
+      line-height: 1.6;
+      margin-bottom: 30px;
+      min-height: 80px;
+      font-weight: 600;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 3px;
+      height: 20px;
+      background-color: #ff4d6d;
+      margin-left: 5px;
+      vertical-align: middle;
+      animation: blink 0.8s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .buttons {
+      display: none; 
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      animation: fadeIn 1.5s forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .top-buttons {
+      display: flex;
+      gap: 15px;
+      width: 100%;
+    }
+
+    button {
+      flex: 1;
+      padding: 15px 20px;
+      border: 2px solid #ff4d6d;
+      border-radius: 50px;
+      background: white;
+      color: #ff4d6d;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Quicksand', sans-serif;
+    }
+
+    button:hover {
+      background: #ff4d6d;
+      color: white;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(255, 77, 109, 0.3);
+    }
+
+    .full-width {
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="message">
+      <span id="text"></span><span id="cursor" class="cursor">&nbsp;</span>
+    </div>
+
+    <div class="buttons" id="buttons">
+      <div class="top-buttons">
+        <button onclick="goChoice('yeshangout.html')">Sure!</button>
+        <button onclick="goChoice('maybehangout.html')">Maybe?</button>
+      </div>
+      <button class="full-width" onclick="goChoice('nohangout.html')">No thanks.</button>
+    </div>
+  </div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+<script>
+  // 1. CONFIGURATION
+  const firebaseConfig = {
+      apiKey: "AIzaSyDV_suRKZfNkHR5OJABEvDvf-CXSNfbG88",
+      authDomain: "confession-4d848.firebaseapp.com",
+      databaseURL: "https://confession-4d848-default-rtdb.firebaseio.com",
+      projectId: "confession-4d848",
+      storageBucket: "confession-4d848.firebasestorage.app",
+      messagingSenderId: "839865796935",
+      appId: "1:839865796935:web:e6911c8dddf6bd0e12a462"
+  };
+
+  if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  // 2. TYPING LOGIC
+  const textEl = document.getElementById("text");
+  const buttons = document.getElementById("buttons");
+  const cursor = document.getElementById("cursor");
+  const message = "So, would you like to hang out with me sometime? Just the two of us... to eat or do something else.";
+  let i = 0;
+  let dotCount = 0;
+
+  function typeMessage() {
+    if (i < message.length) {
+      const char = message.charAt(i);
+      textEl.innerHTML += char;
+      i++;
+      let delay = 60;
+      if (char === "?") delay = 400; 
+
+      if (char === ".") {
+          dotCount++;
+          if (dotCount === 3) delay = 400; 
+          if (dotCount === 6) delay = 400; 
+      }
+      setTimeout(typeMessage, delay);
+    } else {
+      cursor.style.display = "none";
+      buttons.style.display = "flex";
+    }
+  }
+  
+  setTimeout(typeMessage, 500);
+
+  // 3. SAVING LOGIC
+  function goChoice(url) {
+    const visitorName = localStorage.getItem('visitorName');
+    let status = '';
+    let progress = '';
+
+    if(url.includes('yeshangout')) {
+        status = 'She said Sure! (Yes)';
+        progress = 'Outcome: YES';
+    } 
+    else if(url.includes('maybehangout')) {
+        status = 'She said Maybe?';
+        progress = 'Outcome: MAYBE';
+    } 
+    else {
+        status = 'She said No thanks';
+        progress = 'Outcome: NO';
+    }
+
+    if (visitorName) {
+        db.ref('her_response/' + visitorName).update({
+            log_hangout: status,
+            story_progress: progress,
+            last_updated: new Date().toISOString()
+        }).then(() => window.location.href = url)
+          .catch(() => window.location.href = url);
+    } else {
+        window.location.href = url;
+    }
+  }
+</script>
+</body>
+</html>
